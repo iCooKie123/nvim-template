@@ -7,10 +7,12 @@ return {
         -- first key is the mode
         n = {
           ["<C-s>"] = { ":w!<cr>", desc = "Save File" },
-          ["<Leader><C-P>"]={":Telescope projects<cr>",desc="open projects"}
+          ["<Leader><C-P>"] = {
+            function() require("telescope").extensions.projects.projects {} end,
+            desc = "open projects",
+          },
         },
       },
     },
   },
-  
 }
