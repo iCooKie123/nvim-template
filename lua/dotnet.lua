@@ -46,3 +46,4 @@ local config = {
 
 dap.configurations.cs = config
 dap.configurations.fsharp = config
+dap.configurations.netcoredbg = config
