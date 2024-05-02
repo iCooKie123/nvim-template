@@ -8,5 +8,6 @@ return {
   { import = "astrocommunity.pack.lua" },
   { import = "astrocommunity.recipes.vscode" },
   { import = "astrocommunity.pack.cs" },
-  -- import/override with your plugins folder
+  { import = "astrocommunity.recipes.heirline-nvchad-statusline" },
+  { import = "astrocommunity.register.nvim-neoclip-lua" },
 }

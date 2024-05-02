@@ -47,3 +47,8 @@ local config = {
 dap.configurations.cs = config
 dap.configurations.fsharp = config
 dap.configurations.netcoredbg = config
+dap.adapters.coreclr = {
+  type = "executable",
+  command = "C:\\Users\\acons\\AppData\\Local\\nvim-data\\mason\\packages\\netcoredbg\\netcoredbg\\netcoredbg.exe",
+  args = { "--interpreter=vscode" },
+}
