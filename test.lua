@@ -1,16 +1,13 @@
-local function read_file(path)
-  local file = io.open(path, "rb") -- r read mode and b binary mode
-  print(file:read())
-  file:close()
+function extractFolderPath(filePath)
+  local lastSlashIndex = filePath:find "/[^/]*%.csproj$"
+  if lastSlashIndex then
+    return filePath:sub(1, lastSlashIndex - 1)
+  else
+    return "Invalid file path"
+  end
 end
 
-local main = function()
-  local cmd = [[
-  start powershell -NoExit -Command "echo $PID;[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; [System.IO.File]::WriteAllText('pid.txt', $PID); pause"
-  ]]
-  os.execute(cmd)
-  vim.wait(1000)
-  read_file "pid.txt"
-end
-
-main()
+-- Example usage:
+local filePath = "F:/projects/randomproject/GoodProject/GoodProject.csproj"
+local folderPath = extractFolderPath(filePath)
+print(folderPath) -- Output: F:/projects/randomproject/GoodProject

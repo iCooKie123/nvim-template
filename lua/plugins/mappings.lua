@@ -12,7 +12,6 @@ return {
             desc = "open projects",
           },
           ["o"] = { "a<CR><ESC>", desc = "Insert new line from cursor" },
-          ["<C-F5>"] = { function() vim.g.dotnet_get_dll_path() end, desc = "CSharp project runner" },
           ["-"] = { "<CMD>Oil<CR>", desc = "Open parent directory" },
           ["<C-b>"] = { function() vim.g.dotnet_build_project() end, desc = "Build dotnet project" },
         },

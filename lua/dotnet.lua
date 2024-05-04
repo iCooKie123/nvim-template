@@ -1,61 +1,91 @@
 local dap = require "dap"
 local search_files = require("utils/search_files").defer_search
+local extractFolderPath = require("utils/extract_folder_path").extractFolderPath
 local notify = require "notify"
+local pickers = require "telescope.pickers"
+local finders = require "telescope.finders"
+local conf = require("telescope.config").values
+local actions = require "telescope.actions"
+local action_state = require "telescope.actions.state"
 
 local callback_build = function(path)
   local cmd = "dotnet build -c Debug " .. path
   print ""
   print("Cmd to execute: " .. cmd)
   local f = os.execute(cmd)
+  vim.g["dotnet_project_path"] = extractFolderPath(path)
   if f == 0 then
-    notify("Build: ✅", "info", { title = "Build", timeout = 1000 })
+    notify("Build: ✅" .. vim.g["dotnet_project_path"], "info", { title = "Build", timeout = 1000 })
+    return true
   else
     notify("Build: ❌", "error", { title = "Build", timeout = 1000 })
+    return false
   end
 end
 
 vim.g.dotnet_build_project = function() search_files("project_files", "*.csproj", callback_build) end
-
-vim.g.dotnet_get_dll_path = function()
-  local projectName = "OnlineNotebook"
-  search_files("project_files", projectName .. ".dll", function(path)
-    print("Path: " .. path)
-    vim.g["dotnet_dll_path"] = path
-
-    local config = {
-      {
-        type = "coreclr",
-        name = "launch - netcoredbg",
-        request = "launch",
-        program = function() return vim.g["dotnet_dll_path"] end,
-        env = {
-          ASPNETCORE_ENVIRONMENT = "Development",
-        },
-      },
-    }
-
-    dap.configurations.cs = config
-    dap.configurations.fsharp = config
-    dap.configurations.netcoredbg = config
-    notify("DLL Path configured, ready to debug", "info", { title = "Dotnet", timeout = 1000 })
-  end)
-end
-
-vim.g.dotnet_cmd = function()
-  local cmd = [[
-    start powershell -NoExit -Command "echo $PID;[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; [System.IO.File]::WriteAllText('pid.txt', $PID);dotnet run --project OnlineNotebook ; pause"
-  ]]
-  os.execute(cmd)
-  vim.wait(1000)
-  local file = io.open("pid.txt", "rb") -- r read mode and b binary mode
-  vim.g["powershell_PID"] = file:read()
-  file:close()
-
-  notify("Running dotnet    project PID:" .. vim.g["powershell_PID"], "info", { title = "Dotnet", timeout = 1000 })
-end
 
 dap.adapters.coreclr = {
   type = "executable",
   command = "C:\\Users\\acons\\AppData\\Local\\nvim-data\\mason\\packages\\netcoredbg\\netcoredbg\\netcoredbg.exe",
   args = { "--interpreter=vscode" },
 }
+
+local config = {
+  {
+    name = "Launch an executable",
+    type = "coreclr",
+    request = "launch",
+    program = function()
+      return coroutine.create(function(coro)
+        local opts = {}
+        pickers
+          .new(opts, {
+            prompt_title = "Path to executable",
+            finder = finders.new_oneshot_job({ "rg", "--files", "--no-ignore", "-g", "*.dll" }, {}),
+            sorter = conf.generic_sorter(opts),
+            attach_mappings = function(buffer_number)
+              actions.select_default:replace(function()
+                actions.close(buffer_number)
+                coroutine.resume(coro, action_state.get_selected_entry()[1])
+              end)
+              return true
+            end,
+          })
+          :find()
+      end)
+    end,
+    args = { "--urls=https://localhost:7149;http://localhost:5148" }, --TODO: make this configurable, with all launch options
+    env = {
+      ASPNETCORE_ENVIRONMENT = "Development",
+    },
+    cwd = vim.g["dotnet_project_path"],
+    -- prelaunchTask = function()
+    --   return coroutine.create(function(coro)
+    --     local opts = {}
+    --     pickers
+    --       .new(opts, {
+    --         prompt_title = "Project to build",
+    --         finder = finders.new_oneshot_job({ "rg", "--files", "--no-ignore", "-g", "*.csproj" }, {}),
+    --         sorter = conf.generic_sorter(opts),
+    --         attach_mappings = function(buffer_number)
+    --           actions.select_default:replace(function()
+    --             actions.close(buffer_number)
+    --             if callback_build(action_state.get_selected_entry()[1]) then
+    --               coroutine.resume(coro, action_state.get_selected_entry()[1])
+    --             else
+    --               coroutine.yield(nil)
+    --             end
+    --           end)
+    --           return true
+    --         end,
+    --       })
+    --       :find()
+    --   end)
+    -- end,
+  },
+}
+
+dap.configurations.cs = config
+dap.configurations.fsharp = config
+dap.configurations.netcoredbg = config
