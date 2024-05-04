@@ -17,8 +17,8 @@ end
 vim.g.dotnet_build_project = function() search_files("project_files", "*.csproj", callback_build) end
 
 vim.g.dotnet_get_dll_path = function()
-  local projectName= "OnlineNotebook"
-  search_files("project_files", projectName..".dll", function(path)
+  local projectName = "OnlineNotebook"
+  search_files("project_files", projectName .. ".dll", function(path)
     print("Path: " .. path)
     vim.g["dotnet_dll_path"] = path
 
@@ -28,10 +28,9 @@ vim.g.dotnet_get_dll_path = function()
         name = "launch - netcoredbg",
         request = "launch",
         program = function() return vim.g["dotnet_dll_path"] end,
-        env={
+        env = {
           ASPNETCORE_ENVIRONMENT = "Development",
-        }
-        
+        },
       },
     }
 
