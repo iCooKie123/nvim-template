@@ -6,12 +6,12 @@ return {
       mappings = {
         -- first key is the mode
         n = {
-          ["<C-s>"] = { ":w!<cr>", desc = "Save File" },
+          ["<C-s>"] = { ":w<cr>", desc = "Save File(no force)" },
           ["<C-P>"] = {
             function() require("telescope").extensions.projects.projects {} end,
             desc = "open projects",
           },
-          ["o"] = { "a<CR><ESC>", desc = "Insert new line from cursor" },
+          ["o"] = { "o<ESC>", desc = "Insert new line from cursor" },
           ["-"] = { "<CMD>Oil<CR>", desc = "Open parent directory" },
           ["<C-b>"] = { function() vim.g.dotnet_build_project() end, desc = "Build dotnet project" },
         },
