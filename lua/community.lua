@@ -14,6 +14,6 @@ return {
   { import = "astrocommunity.pack.typescript" },
   { import = "astrocommunity.editing-support.multiple-cursors-nvim" },
   { import = "astrocommunity.editing-support.rainbow-delimiters-nvim" },
-  { import = "astrocommunity.syntax.vim-sandwich" },
   { import = "astrocommunity.scrolling.cinnamon-nvim" },
+  { import = "astrocommunity.motion.nvim-surround" },
 }

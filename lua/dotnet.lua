@@ -27,9 +27,10 @@ vim.g.dotnet_build_project = function() search_files("project_files", "*.csproj"
 
 dap.adapters.coreclr = {
   type = "executable",
-  command = "C:\\Users\\acons\\AppData\\Local\\nvim-data\\mason\\packages\\netcoredbg\\netcoredbg\\netcoredbg.exe",
+  command = vim.fn.stdpath "data" .. "/mason/packages/netcoredbg/netcoredbg/netcoredbg.exe",
   args = { "--interpreter=vscode" },
 }
+
 local get_config = function()
   return {
     {

@@ -14,6 +14,12 @@ return {
           ["o"] = { "o<ESC>", desc = "Insert new line from cursor" },
           ["-"] = { "<CMD>Oil<CR>", desc = "Open parent directory" },
           ["<C-b>"] = { function() vim.g.dotnet_build_project() end, desc = "Build dotnet project" },
+          ["<Leader>x"] = {
+            function() require("nvim-emmet").wrap_with_abbreviation() end,
+            desc = "wrap in emmet abreviation",
+          },
+          ["<C-F5>"] = { function() require("csharp").debug_project() end },
+          ["<C-F6>"] = { function() require("csharp").run_project() end },
         },
         t = {
           ["o"] = false,

@@ -17,4 +17,11 @@ end
 
 require "lazy_setup"
 require "polish"
-require "dotnet"
+-- require "dotnet"
+
+--TODO:find a more elegant way to do this
+require("dap").adapters.coreclr = {
+  type = "executable",
+  command = vim.fn.stdpath "data" .. "/mason/packages/netcoredbg/netcoredbg/netcoredbg.exe",
+  args = { "--interpreter=vscode" },
+}
