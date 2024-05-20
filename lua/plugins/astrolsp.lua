@@ -80,6 +80,7 @@ return {
           callback = function() vim.lsp.buf.clear_references() end,
         },
       },
+      eslint_fix_on_save = false,
     },
     -- mappings to be set up on attaching of a language server
     mappings = {

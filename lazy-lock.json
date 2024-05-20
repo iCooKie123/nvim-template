@@ -10,7 +10,6 @@
   "astrolsp": { "branch": "main", "commit": "e1067ad87ef6f77d2c34d1583fd59193899dcd3f" },
   "astrotheme": { "branch": "main", "commit": "8b316aa3ecd8c4206430379c0b1da0b4e7969ab9" },
   "astroui": { "branch": "main", "commit": "e5c5d4570cb00d0e1b2d81db357d108b21503592" },
-  "bad-practices.nvim": { "branch": "main", "commit": "5aa787ddc4bad4214dce1c43c4392edf01bddfb8" },
   "better-escape.nvim": { "branch": "master", "commit": "7e86edafb8c7e73699e0320f225464a298b96d12" },
   "catppuccin": { "branch": "main", "commit": "6af91673ceccbd6e073b66c439e7fce239f72d24" },
   "cinnamon.nvim": { "branch": "master", "commit": "a011e84b624cd7b609ea928237505d31b987748a" },

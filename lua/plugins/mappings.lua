@@ -24,6 +24,12 @@ return {
         t = {
           ["o"] = false,
         },
+        v = {
+          ["<Leader>x"] = {
+            function() require("nvim-emmet").wrap_with_abbreviation() end,
+            desc = "wrap in emmet abreviation",
+          },
+        },
       },
       -- {
       --   "AstroNvim/astrolsp",
